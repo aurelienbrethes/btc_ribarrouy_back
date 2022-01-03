@@ -20,9 +20,7 @@ const hashOptions = {
 const validate = (data) => {
   return Joi.object({
     email: Joi.string().email().max(255).required(),
-    firstname: Joi.string().max(100).required(),
-    lastname: Joi.string().max(150).required(),
-    password: Joi.string().min(7).max(11).required(),
+    password: Joi.string().min(5).max(100).required(),
   }).validate(data, { abortEarly: false }).error;
 };
 
@@ -37,20 +35,41 @@ const verifyPassword = (password, cryptedPassword) => {
 };
 
 // étape 13
-const create = (firstname, lastname, email, password) => {
+const create = (email, password) => {
   return connection
     .promise()
     .query(
-      'INSERT INTO users (firstname, lastname, email, password) VALUES(?,?,?,?)',
-      [firstname, lastname, email, password]
+      'INSERT INTO admin (email, hashedPassword) VALUES(?,?)',
+      [email, password]
     );
+};
+
+const findMany = () => {
+  return connection
+    .promise()
+    .query(
+      'SELECT * FROM admin',
+    )
+};
+
+const findOne = (id) => {
+  return connection
+    .promise()
+    .query('SELECT * FROM admin WHERE id = ?', [id])
+    .then(([results]) => results[0]);
+};
+
+const update = (id, newAttributes) => {
+  return connection
+  .promise()
+  .query('UPDATE admin SET ? WHERE id = ?', [newAttributes, id]);
 };
 
 // étape 18
 const getByEmail = (email) => {
   return connection
     .promise()
-    .query('SELECT * FROM users WHERE email = ?', [email]);
+    .query('SELECT * FROM admin WHERE email = ?', [email]);
 };
 
 // test de l'étape 8
@@ -62,4 +81,7 @@ module.exports = {
   create,
   getByEmail,
   verifyPassword,
+  findMany,
+  update,
+  findOne
 };

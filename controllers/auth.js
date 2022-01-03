@@ -11,19 +11,20 @@ authRouteur.get('/coucoucou', (req, res) => {
 authRouteur.post('/login', (req, res) => {
   const { email, password } = req.body;
   // étape 19
-  getByEmail(email)
+  getByEmail(email)  
     .then(([users]) => users[0])
     .then((user) => {
       if (!user) {
         res.status(422).send('email incorrect');
       } else {
         // étape 21
-        verifyPassword(password, user.password).then((passwordOk) => {
+        verifyPassword(password, user.hashedPassword).then((passwordOk) => {
           // étape 22
+          
           if (passwordOk) {
             // étape 23
             // générer un token
-            const token = calculateToken(email, user.id_user); // étape 24 - rajout de l'id
+            const token = calculateToken(email, user.id); // étape 24 - rajout de l'id
 
             // l'envoyer par cookie
             res.cookie('monCookie', token);
@@ -31,7 +32,8 @@ authRouteur.post('/login', (req, res) => {
           }
         });
       }
-    });
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = authRouteur;
