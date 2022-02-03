@@ -1,7 +1,6 @@
 const connection = require('../db-config');
 const Joi = require('joi');
 
-// étape 10
 const validateEvent = (data) => {
   return Joi.object({
     titre: Joi.string().max(255).required(),

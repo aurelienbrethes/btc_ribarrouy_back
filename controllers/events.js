@@ -1,5 +1,6 @@
 const eventsRouteur = require('express').Router();
 const Event = require('../models/event');
+const { readUserFromCookie } = require('../helpers/users');
 require('dotenv').config();
 
 eventsRouteur.get('/', (req, res) => {
@@ -21,7 +22,7 @@ eventsRouteur.get('/:id', (req, res) => {
   .catch((err) => res.status(500).send(console.log(err)))
 })
 
-eventsRouteur.post('/', (req, res) => {
+eventsRouteur.post('/', readUserFromCookie, (req, res) => {
   const { titre, description, date, lieu } = req.body;
   const validationErrors = Event.validateEvent(req.body);
   if (validationErrors) {
@@ -35,7 +36,7 @@ eventsRouteur.post('/', (req, res) => {
   }
 });
 
-eventsRouteur.put('/:id', (req, res) => {
+eventsRouteur.put('/:id', readUserFromCookie, (req, res) => {
   let existingEvent = null;
   let validationErrors = null;
   Event.findOneEvent(req.params.id)
@@ -51,7 +52,7 @@ eventsRouteur.put('/:id', (req, res) => {
     .catch((err) => res.status(500).send(console.log(err)))
 });
 
-  eventsRouteur.delete('/:id', (req, res) => {
+  eventsRouteur.delete('/:id', readUserFromCookie, (req, res) => {
     Event.deleteEvent(req.params.id)
     .then((deleted) => {
       if (deleted) res.status(200).send('🎉 Event deleted!');
