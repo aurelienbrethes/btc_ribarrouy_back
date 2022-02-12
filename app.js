@@ -21,12 +21,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-app.get('/coucou', (req, res) => {
-  res.status(200).send('hibou');
-});
-
-
 setupRoutes(app);
 
 

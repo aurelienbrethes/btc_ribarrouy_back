@@ -45,7 +45,7 @@ const findMany = () => {
     .query(
       'SELECT * FROM admin',
     )
-};
+  };
 
 const findOne = (id) => {
   return connection

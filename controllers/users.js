@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 usersRouteur.get('/', (req, res) => {
   User.findMany()
-  .then((result) => res.status(200).json(result[0]))
+  .then((result) => res.status(200).send(result[0]))
   .catch((err) => res.status(500).send(console.log(err)))
 })
 
@@ -23,10 +23,6 @@ usersRouteur.post('/test', (req, res) => {
   User.cryptePassword(password).then((hashedPassword) =>
     res.status(200).send(hashedPassword)
   );
-});
-
-usersRouteur.put('/test', readUserFromCookie, (req, res) => {
-  res.status(200).json(req.userId);
 });
 
 

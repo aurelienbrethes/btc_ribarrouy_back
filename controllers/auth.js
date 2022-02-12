@@ -2,10 +2,6 @@ const authRouteur = require('express').Router();
 const { getByEmail, verifyPassword } = require('../models/user');
 const { calculateToken } = require('../helpers/users');
 
-authRouteur.get('/coucoucou', (req, res) => {
-  res.status(200).send('hiboubou');
-});
-
 authRouteur.post('/login', (req, res) => {
   const { email, password } = req.body;
   getByEmail(email)  
