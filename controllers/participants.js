@@ -34,7 +34,18 @@ participantsRouteur.get("/:id", (req, res) => {
 });
 
 participantsRouteur.post("/", (req, res) => {
-  const { lastname, firstname, licence, email, phone, idEvent } = req.body;
+  const {
+    lastname,
+    firstname,
+    licence,
+    email,
+    phone,
+    club,
+    category,
+    food,
+    idEvent,
+    day,
+  } = req.body;
   const validationErrors = Participant.validateParticipant(req.body);
   if (validationErrors) {
     res.status(422).send(validationErrors.details);
@@ -46,7 +57,11 @@ participantsRouteur.post("/", (req, res) => {
       licence,
       email,
       phone,
-      idEvent
+      club,
+      category,
+      food,
+      idEvent,
+      day
     )
       .then(() => res.status(201).json(req.body))
       .catch((error) => res.status(500).send(console.log(error)));

@@ -10,7 +10,11 @@ const validateParticipant = (data) => {
     licence: Joi.string().max(50).required(),
     email: Joi.string().max(100),
     phone: Joi.string().max(20).required(),
+    club: Joi.string().max(255).required(),
+    category: Joi.string().max(50).required(),
+    food: Joi.number().required(),
     idEvent: Joi.number().required(),
+    day: Joi.number().required(),
   }).validate(data, { abortEarly: false }).error;
 };
 
@@ -36,11 +40,26 @@ const createParticipant = (
   licence,
   email,
   phone,
-  idEvent
+  club,
+  category,
+  food,
+  idEvent,
+  day
 ) => {
   return db.query(
-    "INSERT INTO participants (lastname, firstname, licence, email, phone, idEvent) VALUES(?,?,?,?,?,?)",
-    [lastname, firstname, licence, email, phone, idEvent]
+    "INSERT INTO participants (lastname, firstname, licence, email, phone, club, category, food, idEvent, day) VALUES(?,?,?,?,?,?,?,?,?,?)",
+    [
+      lastname,
+      firstname,
+      licence,
+      email,
+      phone,
+      club,
+      category,
+      food,
+      idEvent,
+      day,
+    ]
   );
 };
 
