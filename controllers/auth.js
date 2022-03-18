@@ -1,19 +1,19 @@
-const authRouteur = require('express').Router();
-const { getByEmail, verifyPassword } = require('../models/user');
-const { calculateToken } = require('../helpers/users');
+const authRouteur = require("express").Router();
+const { getByEmail, verifyPassword } = require("../models/user");
+const { calculateToken } = require("../helpers/users");
 
-authRouteur.post('/login', (req, res) => {
+authRouteur.post("/auth/login", (req, res) => {
   const { email, password } = req.body;
-  getByEmail(email)  
+  getByEmail(email)
     .then(([users]) => users[0])
     .then((user) => {
       if (!user) {
-        res.status(422).send('email incorrect');
+        res.status(422).send("email incorrect");
       } else {
-        verifyPassword(password, user.hashedPassword).then((passwordOk) => {        
-          if (passwordOk) { 
-            const token = calculateToken(email, user.id); 
-            res.cookie('monCookie', token);
+        verifyPassword(password, user.hashedPassword).then((passwordOk) => {
+          if (passwordOk) {
+            const token = calculateToken(email, user.id);
+            res.cookie("monCookie", token);
             res.send();
           }
         });
