@@ -1,34 +1,24 @@
-const express = require('express');
-const setupRoutes = require('./controllers');
+const express = require("express");
+const setupRoutes = require("./controllers");
 const app = express();
 const cors = require("cors");
-const connection = require('./db-config');
+const connection = require("./db-config");
 const port = 8000;
 
-const cookieParser = require('cookie-parser');
-
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
-
 
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: ["http://localhost:3000", "http://localhost:3001"],
   credentials: true,
 };
 
-
 app.use(cors(corsOptions));
 
-
-app.get('/coucou', (req, res) => {
-  res.status(200).send('hibou');
-});
-
-
 setupRoutes(app);
-
 
 app.listen(port, () => {
   console.log(
